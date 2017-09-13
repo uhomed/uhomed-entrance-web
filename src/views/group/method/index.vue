@@ -44,7 +44,7 @@
 
 <script>
 import MixSearch from '@/mixins/mix-search';
-import { GET_METHOD_LIST,DELETE_METHOD,UPDATE_METHOD,TEST_METHOD } from '@/service/gateway';
+import { GET_METHOD_LIST,DELETE_METHOD,UPDATE_METHOD_DUBBO,TEST_METHOD } from '@/service/gateway';
 export default{
     data(){
         return{
@@ -196,7 +196,8 @@ export default{
                         id: id,
                         status:status
                     };
-                    let response = await UPDATE_METHOD(params);
+                    let response = await UPDATE_METHOD_DUBBO(params);
+                    console.log(response);
                     if( !response ){return false;}
                     if(response.success){
                         this.$Message.success(response.message);
