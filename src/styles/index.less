@@ -78,6 +78,35 @@
     }
 }
 
+// 重定义 el-table
+.iel-table{
+    &.el-table{
+        border: 1px solid #e9eaec;
+        font-size: 12px;
+        color: #495060;
+        border-bottom: 0;
+        border-right: 0;
+        th{
+            background-color: #f8f8f9;
+        }
+        td,th.is-leaf{
+            border-bottom: 1px solid #e9eaec;
+        }
+    }
+    .el-table__header-wrapper thead div{
+        background-color: #f8f8f9;
+    }
+    .el-table__body tr.hover-row>td{
+        background-color: #ebf7ff;
+    }
+    &.el-table--enable-row-hover .el-table__body tr:hover>td {
+        background-color: #ebf7ff;
+    }
+    .el-table__fixed-header-wrapper thead div{
+        background-color: #f8f8f9;
+    }
+}
+
 // 居中
 .align-center{
     text-align: center;

@@ -11,6 +11,11 @@ import filter from './filter';
 var VueEditable= require('@/libs/vue-editable.js');
 Vue.use(VueEditable);
 
+// element-UI
+import { Table, TableColumn } from 'element-ui';
+Vue.component('elTable', Table);
+Vue.component('elTableColumn', TableColumn);
+
 // 全局观察者
 let Obs = window.Obs = new Vue();
 
