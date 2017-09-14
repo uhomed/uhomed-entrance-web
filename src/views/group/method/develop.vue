@@ -65,9 +65,7 @@
 
                 <pre>调用时生成的参数：</pre>
 
-                <pre>
-                    {{result}}
-                </pre>
+                <pre><code class="json" ref="code">{{result}}</code></pre>
             </Form>
 
         </template>
@@ -76,6 +74,8 @@
 </template>
 
 <script>
+import '@/vendors/highlight';
+const hljs = window.hljs;
 import MixSearch from '@/mixins/mix-search';
 import { METHOD_PARAM_LIST,METHOD_GATEWAY } from '@/service/gateway';
 export default {
@@ -121,6 +121,9 @@ export default {
             let response = await METHOD_GATEWAY(params);
             if (!response) { return false; }
             this.result = response;
+            this.$nextTick(()=>{
+                hljs.highlightBlock(this.$refs.code);
+            });
         },
 
         handleReset(name) {
