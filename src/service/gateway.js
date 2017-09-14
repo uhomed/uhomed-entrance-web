@@ -23,10 +23,13 @@ export const GET_LOGIN = (param)=>{
 /** 方法操作 */
 export const CREATE_METHOD_DUBBO = (param)=>{
     return gateway('post','/admin/method/createDubbo.json',param);
-}
+};
 export const GET_METHOD_LIST = (param)=>{
     return gateway('get', '/admin/method/list.json', param);
 };
+export const METHOD_PARAM_LIST = (param)=>{
+    return gateway('get','/admin/method/param/list.json',param)
+}
 
 // 删除方法
 export const DELETE_METHOD = (param)=>{
@@ -57,6 +60,11 @@ export const CREATE_GROUP = (param)=>{
     return gateway('post','/admin/group/create.json',param);
 }
 /** 分组操作 */
+
+
+export const METHOD_GATEWAY = (param)=>{
+    return gateway('post','/gateway',param);
+}
 
 
 

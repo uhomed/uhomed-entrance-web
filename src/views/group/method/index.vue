@@ -7,7 +7,7 @@
         </Breadcrumb>
 
         <!-- 搜索 -->
-        <Form class="space" inline :show-message="false"  label-position="top">
+        <Form class="space" inline :show-message="false" label-position="top">
             <Form-item label="分组code">
                 <Input placeholder="模糊搜索" v-model="params.likeApiMethodCode"></Input>
             </Form-item>
@@ -25,37 +25,34 @@
             <Form-item label="操作">
                 <Button type="primary" @click="handleSearch">搜索</Button>
                 <!-- <Button type="primary">新增</Button> -->
-                <router-link :to="nextPath"><Button type="primary">新增</Button></router-link>
+                <router-link :to="nextPath">
+                    <Button type="primary">新增</Button>
+                </router-link>
             </Form-item>
         </Form>
 
         <!-- 表格 -->
         <Table border :columns="columns" :data="datas"></Table>
         <!-- 分页 -->
-        <Page class="space" 
-            @on-change="handlePage" 
-            :total="count"
-            show-elevator 
-            show-total
-        ></Page>
+        <Page class="space" @on-change="handlePage" :total="count" show-elevator show-total></Page>
 
     </div>
 </template>
 
 <script>
 import MixSearch from '@/mixins/mix-search';
-import { GET_METHOD_LIST,DELETE_METHOD,UPDATE_METHOD_DUBBO,TEST_METHOD } from '@/service/gateway';
-export default{
-    data(){
-        return{
-            columns:[
+import { GET_METHOD_LIST, DELETE_METHOD, UPDATE_METHOD_DUBBO, TEST_METHOD } from '@/service/gateway';
+export default {
+    data() {
+        return {
+            columns: [
                 {
                     type: 'index',
                     width: 60
                 },
                 {
                     title: '分组code',
-                    render(h, params){
+                    render(h, params) {
                         let Div = {
                             template: `
                                 <Tooltip>
@@ -70,11 +67,11 @@ export default{
                     }
                 },
                 {
-                    title:'版本号',
+                    title: '版本号',
                     key: 'apiMethodVersion'
                 },
                 {
-                    title:'名称',
+                    title: '名称',
                     key: 'apiMethodName'
                 },
                 {
@@ -95,9 +92,9 @@ export default{
                 {
                     title: '参数',
                     width: 90,
-                    render(h, params){
+                    render(h, params) {
                         let Div = {
-                            template: `<router-link :to="{path:'/method/param',query:{id:'${params.row.id}'}}">${params.row.paramCount}</router-link>`
+                            template: `<router-link :to="{path:'/group/method/updateMethod',query:{id:'${params.row.id}'}}">${params.row.paramCount}</router-link>`
                         }
                         return h(Div);
                     }
@@ -105,11 +102,11 @@ export default{
                 {
                     title: '状态',
                     width: 120,
-                    render(h, params){
+                    render(h, params) {
                         let html = null;
                         const row = params.row;
                         const color = params.row.status === 'Y' ? 'green' : 'red';
-                        const text = params.row.status === 'Y' ? 'online' : 'offline' ;
+                        const text = params.row.status === 'Y' ? 'online' : 'offline';
 
                         return h('Tag', {
                             props: {
@@ -123,34 +120,34 @@ export default{
                 {
                     title: '操作',
                     width: 220,
-                    render:(h, params)=>{
+                    render: (h, params) => {
                         let that = this;
                         let html = `<div>`;
-                        if(params.row.status == 'Y'){
-                            html += `<Button type="primary" @click="testMethod('${params.row.id}')">测试</Button> <Button type="warning" @click="delGroup('${params.row.code}')">调试</Button> <Button type="error" @click="offlineMethod('${params.row.id}')">下线</Button>`;
-                        }else {
-                            html +=`<Button type="primary" @click="onlineMethod('${params.row.id}')">上线</Button> <Button type="error" @click="delMethod('${params.row.id}')">删除</Button>`;
+                        if (params.row.status == 'Y') {
+                            html += `<Button type="primary" @click="testMethod('${params.row.id}')">测试</Button> <router-link :to="{path:'/group/method/develop',query:{id:'${params.row.id}'}}"><Button type="warning">调试</Button></router-link> <Button type="error" @click="offlineMethod('${params.row.id}')">下线</Button>`;
+                        } else {
+                            html += `<Button type="primary" @click="onlineMethod('${params.row.id}')">上线</Button> <Button type="error" @click="delMethod('${params.row.id}')">删除</Button>`;
                         }
-                        html +=`</div>`;
+                        html += `</div>`;
 
                         let Div = {
                             template: html,
-                            methods:{
-                                delMethod(id){
+                            methods: {
+                                delMethod(id) {
                                     that.delMethod(id);
                                 },
-                                onlineMethod(id){
-                                    that.updateMethodStatus(id,'Y');
+                                onlineMethod(id) {
+                                    that.updateMethodStatus(id, 'Y');
                                 },
-                                offlineMethod(id){
-                                    that.updateMethodStatus(id,'N');
+                                offlineMethod(id) {
+                                    that.updateMethodStatus(id, 'N');
                                 },
-                                testMethod(id){
+                                testMethod(id) {
                                     that.testMethod(id);
                                 }
                             }
                         }
-                        
+
                         return h(Div);
                     }
                 }
@@ -159,49 +156,49 @@ export default{
             count: 0,
 
             // 查询条件
-            params:{
+            params: {
                 code: null,
                 pageSize: 10,
                 currPage: 1
             },
 
-            nextPath:{
-                path:'/group/method/addMethod',
-                query:{
-                    groupCode:this.$route.query.code
+            nextPath: {
+                path: '/group/method/addMethod',
+                query: {
+                    groupCode: this.$route.query.code
                 }
             }
         }
     },
-    beforeMount(){
+    beforeMount() {
         this.facth();
     },
-    methods:{
-        async facth(){
+    methods: {
+        async facth() {
             this.params.code = this.$route.query.code;
             let params = this.params;
             let response = await GET_METHOD_LIST(params);
-            if( !response ){return false;}
+            if (!response) { return false; }
             this.datas = response.data;
             this.count = response.count;
         },
 
-        updateMethodStatus(id,status){
+        updateMethodStatus(id, status) {
             let ch = status == 'Y' ? '上线' : '下线';
             this.$Modal.confirm({
                 title: '确认',
-                content: '<p>确定'+ch+'该方法吗？</p>',
+                content: '<p>确定' + ch + '该方法吗？</p>',
                 onOk: async () => {
                     let params = {
                         id: id,
-                        status:status
+                        status: status
                     };
                     let response = await UPDATE_METHOD_DUBBO(params);
                     console.log(response);
-                    if( !response ){return false;}
-                    if(response.success){
+                    if (!response) { return false; }
+                    if (response.success) {
                         this.$Message.success(response.message);
-                    }else {
+                    } else {
                         this.$Message.error({
                             content: response.message,
                             duration: 5
@@ -211,14 +208,17 @@ export default{
                 }
             });
         },
-        async testMethod(id){
+        async testMethod(id) {
 
             let params = {
-                id : id
+                id: id
             };
             let response = await TEST_METHOD(params);
-            if(response.success){
-                this.$Message.success(response.message);
+            if (response.success) {
+                this.$Message.success({
+                    content: response.message,
+                    duration: 5
+                });
             } else {
                 this.$Message.error({
                     content: response.message,
@@ -227,7 +227,7 @@ export default{
             }
         },
 
-        delMethod(id){
+        delMethod(id) {
             this.$Modal.confirm({
                 title: '确认',
                 content: '<p>确定删除该方法吗？</p>',
@@ -236,28 +236,28 @@ export default{
                         id: id
                     };
                     let response = await DELETE_METHOD(params);
-                    if( !response ){return false;}
-                    if(response.success){
+                    if (!response) { return false; }
+                    if (response.success) {
                         this.$Message.success(response.message);
-                    }else {
+                    } else {
                         this.$Message.error(response.message);
                     }
                     this.facth();
                 }
             });
         },
-        handleSearch(){
-            this.query = Object.assign({}, this.params, {currPage: 1});
+        handleSearch() {
+            this.query = Object.assign({}, this.params, { currPage: 1 });
         },
-        handlePage(number){
-            this.query = {currPage: number-0};
+        handlePage(number) {
+            this.query = { currPage: number - 0 };
         }
     },
-    watch:{
-        $route(){
+    watch: {
+        $route() {
             this.facth();
         }
     },
-    mixins:[MixSearch]
+    mixins: [MixSearch]
 }
 </script>

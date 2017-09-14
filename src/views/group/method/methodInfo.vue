@@ -57,149 +57,226 @@
             <div v-else-if="formValidate.type == 'HTTPS'">
                 https
             </div>
-            
+            <FormItem label="添加参数">
+                <template>
+                    <Button @click="addParam()"><Icon type="android-add"></Icon></Button>
+                </template>
+            </FormItem>
+            <el-table :data="datas" border class="space iel-table" style="width: 100%">
+                <el-table-column label="node">
+                    <template scope="param">
+                        <Input v-model="param.row.paramCode" placeholder="请输入..." class="col-1"></Input>
+                    </template>
+                </el-table-column>
+                <el-table-column label="名称">
+                    <template scope="param">
+                        <Input v-model="param.row.paramName" placeholder="请输入..." class="col-1"></Input>
+                    </template>
+                </el-table-column>
+                <el-table-column label="类型" width="180">
+                    <template scope="param">
+                        <Select v-model="param.row.paramType" class="col-1">
+                            <Option value="String">String</Option>
+                            <Option value="Int">Int</Option>
+                            <Option value="Float">Float</Option>
+                            <Option value="Double">Double</Option>
+                            <Option value="Long">Long</Option>
+                            <Option value="Boolean">Boolean</Option>
+                            <Option value="Date">Date</Option>
+                            <Option value="List">List</Option>
+                            <Option value="Object">Object</Option>
+                        </Select>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否必传">
+                    <template scope="param">
+                        <Select v-model="param.row.paramRequire" class="col-05">
+                            <Option value="Y">是</Option>
+                            <Option value="N">否</Option>
+                        </Select>
+                    </template>
+                </el-table-column>
+                <el-table-column label="长度">
+                    <template scope="param">
+                        <Input v-model="param.row.length" placeholder="请输入..." class="col-05"></Input>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="220px">
+                    <template scope="param">    
+                        <ButtonGroup>
+                            <Button :disabled="param.$index == 0" type="primary" @click="up(param.$index)"><Icon type="arrow-up-a"></Icon></Button>
+                            <Button :disabled="(param.$index + 1) == datas.length" type="primary" @click="down(param.$index)"><Icon type="arrow-down-a"></Icon></Button>
+                            <Button @click="addParam(param.$index)"><Icon type="android-add"></Icon></Button>
+                            <Button @click="deleteParam(param.$index)"><Icon type="trash-a"></Icon></Button>
+                        </ButtonGroup>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <br/>
             <FormItem>
                 <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
                 <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
             </FormItem>
         </Form>
-        
+
     </div>
 </template>
 
 <script>
-    import MixSearch from '@/mixins/mix-search';
-    import { CREATE_METHOD_DUBBO,METHOD_INFO,UPDATE_METHOD_DUBBO } from '@/service/gateway';
-    export default {
-        data () {
-            return {
-                id: null,
-                formValidate: {
-                    apiMethodCode: null,
-                    apiMethodName: null,
-                    apiMethodVersion: null,
-                    status:null,
-                    verifiSso:null,
-                    mode:null,
-                    methodDesc:null,
-                    classPath:null,
-                    methodName:null,
-                    type : null,
-                    groupCode: this.$route.query.groupCode
-                },
-                ruleValidate: {
-                    apiMethodCode: [
-                        { required: true, message: '方法code不能为空', trigger: 'blur' }
-                    ],
-                    apiMethodName: [
-                        { required: true, message: '方法名不能为空', trigger: 'blur' }
-                    ],
-                    apiMethodVersion: [
-                        { required: true, message: '版本号不能为空', trigger: 'blur' }
-                    ],
-                    status: [
-                        { required: true, message: '接口状态不能为空', trigger: 'blur' }
-                    ],
-                    verifiSso: [
-                        { required: true, message: 'sso校验不能为空', trigger: 'blur' }
-                    ],
-                    mode: [
-                        { required: true, message: '请求方式不能为空', trigger: 'blur' }
-                    ],
-                    methodDesc: [
-                        { required: true, message: '方法描述不能为空', trigger: 'blur' }
-                    ],
-                    type: [
-                        { required: true, message: '接口类型不能为空', trigger: 'blur' }
-                    ],
-                    classPath: [
-                        { required: true, message: 'classPath不能为空', trigger: 'blur' }
-                    ],
-                    methodName: [
-                        { required: true, message: 'methodName不能为空', trigger: 'blur' }
-                    ]
-                },
-                formDynamic: {
-                    items: [
-                        {
-                            value: ''
-                        }
-                    ]
-                }
-            }
-        },
-        mounted(){
-            let id = this.$route.query.id;
-            if( id ){
-                this.id = id;
-                this.fatchData();
-            }
-        },
-        methods: {
-             handleSubmit (name) {
-                this.$refs[name].validate(async (valid) => {
-                    if (valid) {
-                        let params = {
-                            apiMethodCode: this.formValidate.apiMethodCode,
-                            apiMethodName: this.formValidate.apiMethodName,
-                            apiMethodVersion: this.formValidate.apiMethodVersion,
-                            status: this.formValidate.status,
-                            verifiSso: this.formValidate.verifiSso,
-                            mode: this.formValidate.mode,
-                            methodDesc: this.formValidate.methodDesc,
-                            classPath: this.formValidate.classPath,
-                            methodName: this.formValidate.methodName,
-                            groupCode : this.formValidate.groupCode
-                        };
-                        let response = null;
-                        if(this.$route.path == '/group/method/updateMethod'){
-                            params.id = this.$route.query.id;
-                            response = await UPDATE_METHOD_DUBBO(params);
-                        }else {
-                            response = await CREATE_METHOD_DUBBO(params);
-                        }
-                        
-                        if( !response ){return false;}
-
-                        if(response.success){
-                            this.$Message.success(response.message);
-                            this.$router.go(-1);
-                        }else {
-                            this.$Message.error(response.message);
-                        }
-                        
-                    } else {
-                        this.$Message.error('请根据错误提示修改！');
+import MixSearch from '@/mixins/mix-search';
+import { CREATE_METHOD_DUBBO, METHOD_INFO, UPDATE_METHOD_DUBBO } from '@/service/gateway';
+export default {
+    data() {
+        return {
+            datas:[],
+            count:0,
+            id: null,
+            formValidate: {
+                apiMethodCode: null,
+                apiMethodName: null,
+                apiMethodVersion: null,
+                status: null,
+                verifiSso: null,
+                mode: null,
+                methodDesc: null,
+                classPath: null,
+                methodName: null,
+                type: null,
+                groupCode: this.$route.query.groupCode
+            },
+            ruleValidate: {
+                apiMethodCode: [
+                    { required: true, message: '方法code不能为空', trigger: 'blur' }
+                ],
+                apiMethodName: [
+                    { required: true, message: '方法名不能为空', trigger: 'blur' }
+                ],
+                apiMethodVersion: [
+                    { required: true, message: '版本号不能为空', trigger: 'blur' }
+                ],
+                status: [
+                    { required: true, message: '接口状态不能为空', trigger: 'blur' }
+                ],
+                verifiSso: [
+                    { required: true, message: 'sso校验不能为空', trigger: 'blur' }
+                ],
+                mode: [
+                    { required: true, message: '请求方式不能为空', trigger: 'blur' }
+                ],
+                methodDesc: [
+                    { required: true, message: '方法描述不能为空', trigger: 'blur' }
+                ],
+                type: [
+                    { required: true, message: '接口类型不能为空', trigger: 'blur' }
+                ],
+                classPath: [
+                    { required: true, message: 'classPath不能为空', trigger: 'blur' }
+                ],
+                methodName: [
+                    { required: true, message: 'methodName不能为空', trigger: 'blur' }
+                ]
+            },
+            formDynamic: {
+                items: [
+                    {
+                        value: ''
                     }
-                })
-            },
-            
-            handleReset (name) {
-                this.$refs[name].resetFields();
-            },
-            handleAdd () {
-                this.formDynamic.items.push({
-                    value: ''
-                });
-            },
-            handleRemove (index) {
-                this.formDynamic.items.splice(index, 1);
-            },
-            async fatchData(){
-                let response = await METHOD_INFO({
-                    id: this.id
-                });
-                if( !response ){ return false; };
-                let data = response.data;
-                Object.assign(this.formValidate, data);
+                ]
+            }
+        }
+    },
+    mounted() {
+        let id = this.$route.query.id;
+        if (id) {
+            this.id = id;
+            this.fatchData();
+        }
+    },
+    methods: {
+        up(index){
+            let curr = this.datas.splice(index, 1);
+            this.datas.splice(index-1, 0, curr[0] );
+        },
+        down(index){
+            let curr = this.datas.splice(index, 1);
+            this.datas.splice(index+1, 0, curr[0] );
+        },
+        addParam(index){
+            if(index){
+                this.datas.splice(index+1,0,{});
+            }else {
+                this.datas.splice(this.datas.length+1,0,{});
+            }
+        },
+        deleteParam(index){
+            this.datas.splice(index,1);
+        },
+        handleSubmit(name) {
+            this.$refs[name].validate(async (valid) => {
+                if (valid) {
+                    let params = {
+                        apiMethodCode: this.formValidate.apiMethodCode,
+                        apiMethodName: this.formValidate.apiMethodName,
+                        apiMethodVersion: this.formValidate.apiMethodVersion,
+                        status: this.formValidate.status,
+                        verifiSso: this.formValidate.verifiSso,
+                        mode: this.formValidate.mode,
+                        methodDesc: this.formValidate.methodDesc,
+                        classPath: this.formValidate.classPath,
+                        methodName: this.formValidate.methodName,
+                        groupCode: this.formValidate.groupCode,
+                        params : JSON.stringify(this.datas)
+                    };
+                    let response = null;
+                    if (this.$route.path == '/group/method/updateMethod') {
+                        params.id = this.$route.query.id;
+                        response = await UPDATE_METHOD_DUBBO(params);
+                    } else {
+                        response = await CREATE_METHOD_DUBBO(params);
+                    }
 
-                if(data.type == 'DUBBO'){
-                    this.formValidate.classPath = response.dubbo.classPath;
-                    this.formValidate.methodName = response.dubbo.methodName;
+                    if (!response) { return false; }
+
+                    if (response.success) {
+                        this.$Message.success(response.message);
+                        this.$router.go(-1);
+                    } else {
+                        this.$Message.error(response.message);
+                    }
+
+                } else {
+                    this.$Message.error('请根据错误提示修改！');
                 }
+            })
+        },
+
+        handleReset(name) {
+            this.$refs[name].resetFields();
+        },
+        handleAdd() {
+            this.formDynamic.items.push({
+                value: ''
+            });
+        },
+        handleRemove(index) {
+            this.formDynamic.items.splice(index, 1);
+        },
+        async fatchData() {
+            let response = await METHOD_INFO({
+                id: this.id
+            });
+            if (!response) { return false; };
+            let data = response.data;
+            Object.assign(this.formValidate, data);
+
+            if (data.type == 'DUBBO') {
+                this.formValidate.classPath = response.dubbo.classPath;
+                this.formValidate.methodName = response.dubbo.methodName;
+                this.datas = response.params;
             }
         }
     }
+}
 
 
 </script>
