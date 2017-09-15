@@ -62,7 +62,11 @@ export const CREATE_GROUP = (param)=>{
 /** 分组操作 */
 
 
-export const METHOD_GATEWAY = (param)=>{
+export const METHOD_GATEWAY_GET = (param)=>{
+    return gateway('get','/gateway',param);
+}
+
+export const METHOD_GATEWAY_POST = (param)=>{
     return gateway('post','/gateway',param);
 }
 

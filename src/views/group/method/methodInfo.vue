@@ -2,9 +2,20 @@
     <div>
         <Breadcrumb>
             <Breadcrumb-item>首页</Breadcrumb-item>
-            <Breadcrumb-item>接口</Breadcrumb-item>
+            <Breadcrumb-item>
+                <router-link to="/group">分组</router-link>
+            </Breadcrumb-item>
+            <Breadcrumb-item>
+                <a @click="goMethodList()">方法列表</a>
+            </Breadcrumb-item>
+            <Breadcrumb-item>方法详情</Breadcrumb-item>
         </Breadcrumb>
         <br/>
+
+        <Modal v-model="desc" title="参数描述" @on-ok="ok" @on-cancel="cancel">
+            <Input v-model="paramDesc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+        </Modal>
+
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
             <FormItem label="方法code" prop="apiMethodCode">
                 <Input v-model="formValidate.apiMethodCode" placeholder="xkhstar" class="col-2"></Input>
@@ -59,11 +70,13 @@
             </div>
             <FormItem label="添加参数">
                 <template>
-                    <Button @click="addParam()"><Icon type="android-add"></Icon></Button>
+                    <Button @click="addParam()">
+                        <Icon type="android-add"></Icon>
+                    </Button>
                 </template>
             </FormItem>
             <el-table :data="datas" border class="space iel-table" style="width: 100%">
-                <el-table-column label="node">
+                <el-table-column label="code">
                     <template scope="param">
                         <Input v-model="param.row.paramCode" placeholder="请输入..." class="col-1"></Input>
                     </template>
@@ -101,16 +114,33 @@
                         <Input v-model="param.row.length" placeholder="请输入..." class="col-05"></Input>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作" width="220px">
-                    <template scope="param">    
+                <el-table-column label="默认值">
+                    <template scope="param">
+                        <Input v-model="param.row.defaultValue" placeholder="请输入..." class="col-1"></Input>
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="240px">
+                    <template scope="param">
                         <ButtonGroup>
-                            <Button :disabled="param.$index == 0" type="primary" @click="up(param.$index)"><Icon type="arrow-up-a"></Icon></Button>
-                            <Button :disabled="(param.$index + 1) == datas.length" type="primary" @click="down(param.$index)"><Icon type="arrow-down-a"></Icon></Button>
-                            <Button @click="addParam(param.$index)"><Icon type="android-add"></Icon></Button>
-                            <Button @click="deleteParam(param.$index)"><Icon type="trash-a"></Icon></Button>
+                            <Button @click="showDescText(param.$index)">
+                                <Icon type="document-text"></Icon>
+                            </Button>
+                            <Button :disabled="param.$index == 0" type="primary" @click="up(param.$index)">
+                                <Icon type="arrow-up-a"></Icon>
+                            </Button>
+                            <Button :disabled="(param.$index + 1) == datas.length" type="primary" @click="down(param.$index)">
+                                <Icon type="arrow-down-a"></Icon>
+                            </Button>
+                            <Button @click="addParam(param.$index)">
+                                <Icon type="android-add"></Icon>
+                            </Button>
+                            <Button @click="deleteParam(param.$index)">
+                                <Icon type="trash-a"></Icon>
+                            </Button>
                         </ButtonGroup>
                     </template>
                 </el-table-column>
+
             </el-table>
             <br/>
             <FormItem>
@@ -128,9 +158,13 @@ import { CREATE_METHOD_DUBBO, METHOD_INFO, UPDATE_METHOD_DUBBO } from '@/service
 export default {
     data() {
         return {
-            datas:[],
-            count:0,
+            desc: false,
+            paramDesc: '',
+            datas: [],
+            index: 0,
+            count: 0,
             id: null,
+            descValue: '',
             formValidate: {
                 apiMethodCode: null,
                 apiMethodName: null,
@@ -193,23 +227,38 @@ export default {
         }
     },
     methods: {
-        up(index){
-            let curr = this.datas.splice(index, 1);
-            this.datas.splice(index-1, 0, curr[0] );
+        showDescText(i){
+            this.paramDesc = this.datas[i].paramDesc;
+            this.desc = true;
+            this.index = i;
         },
-        down(index){
-            let curr = this.datas.splice(index, 1);
-            this.datas.splice(index+1, 0, curr[0] );
+        ok() {
+            this.datas[this.index].paramDesc = this.paramDesc;
         },
-        addParam(index){
-            if(index){
-                this.datas.splice(index+1,0,{});
-            }else {
-                this.datas.splice(this.datas.length+1,0,{});
+        cancel() {
+            this.paramDesc = '';
+            this.index = 0;
+        },
+        goMethodList() {
+            this.$router.go(-1);
+        },
+        up(index) {
+            let curr = this.datas.splice(index, 1);
+            this.datas.splice(index - 1, 0, curr[0]);
+        },
+        down(index) {
+            let curr = this.datas.splice(index, 1);
+            this.datas.splice(index + 1, 0, curr[0]);
+        },
+        addParam(index) {
+            if (index) {
+                this.datas.splice(index + 1, 0, {});
+            } else {
+                this.datas.splice(this.datas.length + 1, 0, {});
             }
         },
-        deleteParam(index){
-            this.datas.splice(index,1);
+        deleteParam(index) {
+            this.datas.splice(index, 1);
         },
         handleSubmit(name) {
             this.$refs[name].validate(async (valid) => {
@@ -225,7 +274,7 @@ export default {
                         classPath: this.formValidate.classPath,
                         methodName: this.formValidate.methodName,
                         groupCode: this.formValidate.groupCode,
-                        params : JSON.stringify(this.datas)
+                        params: JSON.stringify(this.datas)
                     };
                     let response = null;
                     if (this.$route.path == '/group/method/updateMethod') {

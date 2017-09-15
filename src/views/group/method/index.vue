@@ -2,13 +2,13 @@
     <div>
         <Breadcrumb>
             <Breadcrumb-item>首页</Breadcrumb-item>
-            <Breadcrumb-item>分组列表</Breadcrumb-item>
+            <Breadcrumb-item><router-link to="/group">分组列表</router-link></Breadcrumb-item>
             <Breadcrumb-item>方法列表</Breadcrumb-item>
         </Breadcrumb>
 
         <!-- 搜索 -->
         <Form class="space" inline :show-message="false" label-position="top">
-            <Form-item label="分组code">
+            <Form-item label="方法名">
                 <Input placeholder="模糊搜索" v-model="params.likeApiMethodCode"></Input>
             </Form-item>
             <Form-item label="名称">
@@ -51,7 +51,7 @@ export default {
                     width: 60
                 },
                 {
-                    title: '分组code',
+                    title: '方法名',
                     render(h, params) {
                         let Div = {
                             template: `
@@ -159,7 +159,7 @@ export default {
             params: {
                 code: null,
                 pageSize: 10,
-                currPage: 1
+                currPage: this.$route.query.currPage || 1
             },
 
             nextPath: {
