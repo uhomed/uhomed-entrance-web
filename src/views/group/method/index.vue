@@ -171,7 +171,9 @@ export default {
         }
     },
     beforeMount() {
-        this.facth();
+        if( this.$route.query.currPage ){
+            this.facth();
+        }
     },
     methods: {
         async facth() {
@@ -254,7 +256,7 @@ export default {
         }
     },
     watch: {
-        $route() {
+        $route(curr, old) {
             this.facth();
         }
     },

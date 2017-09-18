@@ -106,7 +106,13 @@ export default {
         }
     },
     watch: {
-        $route() {
+        // $route(curr, old) {
+        //     let query = old.query;
+        //     if( query.keys.length>0 ){
+        //         this.fatch();
+        //     }
+        // }
+        $route(curr, old) {
             this.facth();
         }
     },

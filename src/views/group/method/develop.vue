@@ -171,7 +171,11 @@ export default {
             this.info = response.info;
 
             this.datas.forEach(function(element) {
-                this.formValidate[element.paramCode] = '';
+                if(element.defaultValue){
+                    this.formValidate[element.paramCode] = element.defaultValue;
+                }else {
+                    this.formValidate[element.paramCode] = '';
+                }
                 if(element.paramRequire =='Y'){
                     this.ruleValidate[element.paramCode] = [{ required: true, message: element.paramName + '不能为空', trigger: 'blur' }];
                 }

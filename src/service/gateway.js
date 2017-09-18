@@ -1,4 +1,7 @@
 import '@/mock/gateway';
+
+const PROD = process.env.NODE_ENV === 'production';
+
 /**
  * 网关 API接口
  */
@@ -74,7 +77,11 @@ export const METHOD_GATEWAY_POST = (param)=>{
 
 // 封装 API
 function gateway(type, way, data){
-    way = '/gateway'+way;
+
+    // 环境变量判断是否需要gateway前缀
+    if( !PROD ){
+        way = '/gateway'+way;
+    }
     let params = {};
     if( Object.prototype.toString.call(data) == '[object Object]' ){
         for( let key in data ){
