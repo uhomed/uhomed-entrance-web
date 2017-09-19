@@ -79,9 +79,7 @@ export const METHOD_GATEWAY_POST = (param)=>{
 function gateway(type, way, data){
 
     // 环境变量判断是否需要gateway前缀
-    if( !PROD ){
-        way = '/gateway'+way;
-    }
+    way = '/pass'+way;
     let params = {};
     if( Object.prototype.toString.call(data) == '[object Object]' ){
         for( let key in data ){

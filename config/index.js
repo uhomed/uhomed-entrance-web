@@ -35,12 +35,12 @@ module.exports = {
                 '^/cnode/api/v1': '/'
             }
         },
-        '/gateway':{
+        '/pass':{
             changeOrigin: true,
-            target: 'http://127.0.0.1:8081',
-            pathRewrite: {
-              '^/gateway': '/'
-          }
+            target: 'http://10.0.0.215:8080',
+          //   pathRewrite: {
+          //     '^/pass': '/'
+          // }
         }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
