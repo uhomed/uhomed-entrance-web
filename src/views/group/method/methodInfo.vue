@@ -250,7 +250,7 @@ export default {
             this.datas.splice(index + 1, 0, curr[0]);
         },
         addParam(index) {
-            if (index) {
+            if (index != null) {
                 this.datas.splice(index + 1, 0, {});
             } else {
                 this.datas.splice(this.datas.length + 1, 0, {});
