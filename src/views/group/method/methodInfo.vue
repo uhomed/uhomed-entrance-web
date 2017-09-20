@@ -18,7 +18,7 @@
 
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
             <FormItem label="方法code" prop="apiMethodCode">
-                <Input v-model="formValidate.apiMethodCode" placeholder="xkhstar" class="col-2"></Input>
+                <Input v-model="formValidate.apiMethodCode" placeholder="xkhstar" class="col-4"></Input>
             </FormItem>
             <FormItem label="方法名" prop="apiMethodName">
                 <Input v-model="formValidate.apiMethodName" placeholder="登录接口" class="col-3"></Input>
@@ -59,7 +59,7 @@
                     <Input v-model="formValidate.classPath" placeholder="com.xkhstar.xxx.xxx" class="col-5"></Input>
                 </FormItem>
                 <FormItem label="methodName" prop="methodName">
-                    <Input v-model="formValidate.methodName" placeholder="test" class="col-2"></Input>
+                    <Input v-model="formValidate.methodName" placeholder="test" class="col-3"></Input>
                 </FormItem>
             </div>
             <div v-else-if="formValidate.type == 'HTTP'">
@@ -88,7 +88,7 @@
                 </el-table-column>
                 <el-table-column label="类型" width="180">
                     <template scope="param">
-                        <Select v-model="param.row.paramType" class="col-1">
+                        <Select v-model="param.row.paramType" class="col-1" transfer='true'>
                             <Option value="String">String</Option>
                             <Option value="Int">Int</Option>
                             <Option value="Float">Float</Option>

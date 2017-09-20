@@ -8,7 +8,7 @@
 
         <!-- 搜索 -->
         <Form class="space" inline :show-message="false" label-position="top">
-            <Form-item label="方法名">
+            <Form-item label="搜索">
                 <Input placeholder="模糊搜索" v-model="params.likeApiMethodCode"></Input>
             </Form-item>
             <Form-item label="名称">
@@ -34,7 +34,7 @@
         <!-- 表格 -->
         <Table border :columns="columns" :data="datas"></Table>
         <!-- 分页 -->
-        <Page class="space" @on-change="handlePage" :total="count" show-elevator show-total></Page>
+        <Page class="space" @on-change="handlePage" :total="count-0" :current="params.currPage-0" show-elevator show-total></Page>
 
     </div>
 </template>

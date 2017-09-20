@@ -37,7 +37,7 @@
                                 <Button type="primary" @click="handleSubmit()">调试</Button>
                             </FormItem>
                             <FormItem label="method" >
-                                <Input v-model="info.apiMethodCode" disabled class="col-2" ></Input>
+                                <Input v-model="info.apiMethodCode" disabled class="col-4" ></Input>
                                 <Tooltip content="调用接口名" placement="bottom">
                                     <Icon type="help"></Icon>
                                 </Tooltip>

@@ -46,7 +46,7 @@
             </el-table-column>
         </el-table>
         <!-- 分页 -->
-        <Page class="space" @on-change="handlePage" :total="count" show-elevator show-total></Page>
+        <Page class="space" @on-change="handlePage" :total="count-0" :current="params.currPage-0" show-elevator show-total></Page>
 
     </div>
 </template>
@@ -62,7 +62,8 @@ export default {
             // 查询条件
             params: {
                 pageSize: 10,
-                currPage: 1
+                currPage: 1,
+                currPage: this.$route.query.currPage-0 || 1
             }
         }
     },
