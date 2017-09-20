@@ -14,7 +14,6 @@
             </FormItem>
             <FormItem>
                 <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
-                <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
             </FormItem>
         </Form>
     </div>
@@ -89,9 +88,6 @@
             //         }
             //     });
             // },
-            handleReset (name) {
-                this.$refs[name].resetFields();
-            },
             handleAdd () {
                 this.formDynamic.items.push({
                     value: ''

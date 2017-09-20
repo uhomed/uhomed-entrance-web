@@ -88,7 +88,7 @@
                 </el-table-column>
                 <el-table-column label="类型" width="180">
                     <template scope="param">
-                        <Select v-model="param.row.paramType" class="col-1" transfer='true'>
+                        <Select v-model="param.row.paramType" class="col-1" :transfer='true'>
                             <Option value="String">String</Option>
                             <Option value="Int">Int</Option>
                             <Option value="Float">Float</Option>
@@ -145,7 +145,6 @@
             <br/>
             <FormItem>
                 <Button type="primary" @click="handleSubmit('formValidate')">保存</Button>
-                <Button type="ghost" @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
             </FormItem>
         </Form>
 
@@ -299,9 +298,6 @@ export default {
             })
         },
 
-        handleReset(name) {
-            this.$refs[name].resetFields();
-        },
         handleAdd() {
             this.formDynamic.items.push({
                 value: ''

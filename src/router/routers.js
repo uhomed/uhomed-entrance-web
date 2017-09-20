@@ -83,6 +83,14 @@ const routers = [
                 component: (resolve) => require(['@/views/group/method/methodInfo'], resolve)
             },
             {
+                path: '/group/method/copyMethod',
+                meta:{
+                    title: 'copy方法',
+                    token: true
+                },
+                component: (resolve) => require(['@/views/group/method/methodInfo'], resolve)
+            },
+            {
                 path: '/group/method/develop',
                 meta:{
                     title: '添加方法',

@@ -13,7 +13,7 @@ let menus =[
         icon: 'person-stalker',
         text: '分组管理',
         path: '/group',
-        ison: ['/group/addGroup','/group/method','/group/method/updateMethod','/group/method/addMethod','/group/method/develop']
+        ison: ['/group/addGroup','/group/method','/group/method/updateMethod','/group/method/addMethod','/group/method/develop','/group/method/copyMethod']
     },
     {
         type: 'submenu',

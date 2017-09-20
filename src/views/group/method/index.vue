@@ -79,11 +79,7 @@ export default {
                     width: 90,
                     key: 'verifiSsoCH'
                 },
-                {
-                    title: '接口类型',
-                    width: 100,
-                    key: 'type'
-                },
+
                 {
                     title: '调用类型',
                     width: 90,
@@ -119,14 +115,14 @@ export default {
                 },
                 {
                     title: '操作',
-                    width: 220,
+                    width: 280,
                     render: (h, params) => {
                         let that = this;
                         let html = `<div>`;
                         if (params.row.status == 'Y') {
-                            html += `<Button type="primary" @click="testMethod('${params.row.id}')">测试</Button> <router-link :to="{path:'/group/method/develop',query:{id:'${params.row.id}'}}"><Button type="warning">调试</Button></router-link> <Button type="error" @click="offlineMethod('${params.row.id}')">下线</Button>`;
+                            html += `<Button type="primary" @click="testMethod('${params.row.id}')">测试</Button> <router-link :to="{path:'/group/method/develop',query:{id:'${params.row.id}'}}"><Button type="warning">调试</Button></router-link> <Button type="error" @click="offlineMethod('${params.row.id}')">下线</Button> <router-link :to="{path:'/group/method/copyMethod',query:{id:'${params.row.id}'}}"><Button>copy</Button></router-link>`;
                         } else {
-                            html += `<Button type="primary" @click="onlineMethod('${params.row.id}')">上线</Button> <Button type="error" @click="delMethod('${params.row.id}')">删除</Button>`;
+                            html += `<Button type="primary" @click="onlineMethod('${params.row.id}')">上线</Button> <Button type="error" @click="delMethod('${params.row.id}')">删除</Button> <router-link :to="{path:'/group/method/copyMethod',query:{id:'${params.row.id}'}}"><Button>copy</Button></router-link>`;
                         }
                         html += `</div>`;
 

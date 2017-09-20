@@ -28,20 +28,20 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/cnode':{
-            changeOrigin: true,
-            target: 'https://cnodejs.org/api/v1',
-            pathRewrite: {
-                '^/cnode/api/v1': '/'
-            }
-        },
-        '/pass':{
-            changeOrigin: true,
-            target: 'http://10.0.0.215:8080',
-          //   pathRewrite: {
-          //     '^/pass': '/'
-          // }
+      '/cnode': {
+        changeOrigin: true,
+        target: 'https://cnodejs.org/api/v1',
+        pathRewrite: {
+          '^/cnode/api/v1': '/'
         }
+      },
+      '/pass': {
+        changeOrigin: true,
+        target: 'http://127.0.0.1:8081',
+        pathRewrite: {
+          '^/pass': '/'
+        }
+      }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
