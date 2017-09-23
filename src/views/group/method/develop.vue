@@ -28,7 +28,7 @@
                                 <Input :placeholder="param.paramType" v-model="formValidate[param.paramCode]" class="col-2"></Input>
                                 <Tooltip placement="bottom">
                                     <div slot="content" style="white-space: normal;">
-                                        {{param.paramName}} {{param.paramType}}
+                                        {{param.paramName}} {{param.paramType}} {{param.paramDesc}}
                                     </div>
                                     <Icon type="help"></Icon>
                                 </Tooltip>
