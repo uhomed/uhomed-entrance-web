@@ -24,6 +24,12 @@
                                     <Icon type="help"></Icon>
                                 </Tooltip>
                             </FormItem>
+                            <FormItem v-if="info.verifiSso" label="直连ip" prop="router">
+                                <Input v-model="formValidate.router" required class="col-2"></Input>
+                                <Tooltip content="router" placement="bottom">
+                                    <Icon type="help"></Icon>
+                                </Tooltip>
+                            </FormItem>
                             <FormItem v-for="param in datas" :key="param.id" :label="param.paramName" :prop="param.paramCode" >
                                 <Input :placeholder="param.paramType" v-model="formValidate[param.paramCode]" class="col-2"></Input>
                                 <Tooltip placement="bottom">
@@ -37,7 +43,7 @@
                                 <Button type="primary" @click="handleSubmit()">调试</Button>
                             </FormItem>
                             <FormItem label="method" >
-                                <Input v-model="info.apiMethodCode" disabled class="col-4" ></Input>
+                                <Input v-model="info.apiMethodCode" disabled class="col-3" ></Input>
                                 <Tooltip content="调用接口名" placement="bottom">
                                     <Icon type="help"></Icon>
                                 </Tooltip>
@@ -136,7 +142,8 @@ export default {
                     format: this.formValidate.format,
                     timestamp : this.timestamp,
                     bizParams:JSON.stringify(bizParams),
-                    sso : this.formValidate.sso
+                    sso : this.formValidate.sso,
+                    router:this.formValidate.router
                 }
 
                 console.log(params);
