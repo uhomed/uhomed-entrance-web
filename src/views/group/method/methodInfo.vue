@@ -101,16 +101,17 @@
                         </Select>
                     </template>
                 </el-table-column>
-                <el-table-column label="是否必传">
+                <el-table-column label="是否必传" width="100">
                     <template scope="param">
-                        <Select v-model="param.row.paramRequire" class="col-05">
+                        <Select v-model="param.row.paramRequire" class="col-05" style="width:100%">
                             <Option value="Y">是</Option>
                             <Option value="N">否</Option>
                         </Select>
                     </template>
                 </el-table-column>
-                <el-table-column label="长度">
+                <el-table-column label="长度" width="150">
                     <template scope="param">
+                        <Input v-model="param.row.minLength" placeholder="请输入..." class="col-05"></Input>
                         <Input v-model="param.row.length" placeholder="请输入..." class="col-05"></Input>
                     </template>
                 </el-table-column>
@@ -251,9 +252,15 @@ export default {
         },
         addParam(index) {
             if (index != null) {
-                this.datas.splice(index + 1, 0, {});
+                this.datas.splice(index + 1, 0, {
+                    length: 0,
+                    minLength: 0
+                });
             } else {
-                this.datas.splice(this.datas.length + 1, 0, {});
+                this.datas.splice(this.datas.length + 1, 0, {
+                    length: 0,
+                    minLength: 0
+                });
             }
         },
         deleteParam(index) {
