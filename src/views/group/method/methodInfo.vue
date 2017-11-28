@@ -98,8 +98,6 @@
                             <Option value="Date">Date</Option>
                             <Option value="List">List</Option>
                             <Option value="Object">Object</Option>
-                            <Option value="RequestBody">RequestBody</Option>
-                            <Option value="ParameterMap">ParameterMap</Option>
                         </Select>
                     </template>
                 </el-table-column>
