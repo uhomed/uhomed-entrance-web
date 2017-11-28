@@ -101,6 +101,16 @@
                         </Select>
                     </template>
                 </el-table-column>
+                <el-table-column label="来源" width="180">
+                    <template scope="param">
+                        <Select v-model="param.row.resource" class="col-1" :transfer='true'>
+                            <Option value="BIZ_PARAMS">biaParams</Option>
+                            <Option value="REQUEST_BODY">RequestBody</Option>
+                            <Option value="URL">URL</Option>
+                            <Option value="HEADERS">header</Option>
+                        </Select>
+                    </template>
+                </el-table-column>
                 <el-table-column label="是否必传" width="100">
                     <template scope="param">
                         <Select v-model="param.row.paramRequire" class="col-05" style="width:100%">
