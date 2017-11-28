@@ -104,7 +104,7 @@
                 <el-table-column label="来源" width="180">
                     <template scope="param">
                         <Select v-model="param.row.resource" class="col-1" :transfer='true'>
-                            <Option value="BIZ_PARAMS">biaParams</Option>
+                            <Option value="BIZ_PARAMS">bizParams</Option>
                             <Option value="REQUEST_BODY">RequestBody</Option>
                             <Option value="URL">URL</Option>
                             <Option value="HEADERS">header</Option>
